@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+
+  redis-id-svc-client:
+    container_name: redis-id-svc-client
+    image: redis:5.0.5
+    ports:
+      - 6379:6379
+    logging:
+      driver: none
+
