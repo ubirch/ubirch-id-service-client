@@ -6,38 +6,46 @@ concurrentRestrictions in Global := Seq(
 val commonSettings = Seq(
 
   scalaVersion := "2.11.12",
-  organization := "com.ubirch.key",
+  organization := "com.ubirch.id",
   homepage := Some(url("http://ubirch.com")),
   scmInfo := Some(ScmInfo(
-    url("https://github.com/ubirch/ubirch-key-service"),
-    "scm:git:git@github.com:ubirch/ubirch-key-service.git"
+    url("https://github.com/ubirch/ubirch-id-service-client"),
+    "scm:git:git@github.com:ubirch/ubirch-id-service-client.git"
   )),
   version := "0.1.0-SNAPSHOT",
   resolvers ++= Seq(
     Resolver.sonatypeRepo("releases") //,
-  )
+    //Resolver.sonatypeRepo("snapshots")
+  ),
+  (sys.env.get("CLOUDREPO_USER"), sys.env.get("CLOUDREPO_PW")) match {
+    case (Some(username), Some(password)) =>
+      println("USERNAME and/or PASSWORD found.")
+      credentials += Credentials("ubirch.mycloudrepo.io", "ubirch.mycloudrepo.io", username, password)
+    case _ =>
+      println("USERNAME and/or PASSWORD is taken from /.sbt/.credentials.")
+      credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
+  },
+  publishTo := Some("io.cloudrepo" at "https://ubirch.mycloudrepo.io/repositories/trackle-mvn"),
+  publishMavenStyle := true
 )
 
 /*
  * MODULES
  ********************************************************/
 
-lazy val root = (project in file("."))
+lazy val ubirchIdServiceClient = (project in file("."))
   .settings(
     name := "ubirch-id-service-client",
     description := "REST client of the id-service",
     commonSettings,
-    skip in publish := true,
-    libraryDependencies ++= depClientRest
+    libraryDependencies ++= dependencies
   )
 
 /*
  * MODULE DEPENDENCIES
  ********************************************************/
 
-lazy val depClientRest = Seq(
-  // https://mvnrepository.com/artifact/org.redisson/redisson
-  redisson,
+lazy val dependencies = Seq(
   ubirchDate,
   akkaHttp,
   akkaStream,
@@ -89,8 +97,6 @@ val scalaLogging = Seq(
 val akkaHttp = akkaG %% "akka-http" % akkaHttpV
 val akkaSlf4j = akkaG %% "akka-slf4j" % akkaV
 val akkaStream = akkaG %% "akka-stream" % akkaV
-
-val redisson = "org.redisson" % "redisson" % "3.7.5"
 
 val excludedLoggers = Seq(
   ExclusionRule(organization = "com.typesafe.scala-logging"),
