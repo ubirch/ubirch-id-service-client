@@ -5,9 +5,9 @@ import akka.actor.ActorSystem
 import com.typesafe.scalalogging.slf4j.StrictLogging
 import com.ubirch.idservice.client.config.IdClientConfig
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyInfo}
-import com.ubirch.util.date.DateUtil
 import com.ubirch.util.json.Json4sUtil
 import com.ubirch.util.redis.RedisClientUtil
+import org.joda.time.{DateTime, DateTimeZone}
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
@@ -117,7 +117,7 @@ object RedisCache extends StrictLogging {
   private def expireInSeconds(pubKeyInfo: PublicKeyInfo): Int = {
 
     val maxTTL = IdClientConfig.maxTTL
-    val now = DateUtil.nowUTC
+    val now = DateTime.now(DateTimeZone.UTC)
     val maxExpiryDate = now.plusSeconds(maxTTL)
     pubKeyInfo.validNotAfter match {
 
@@ -148,7 +148,7 @@ object RedisCache extends StrictLogging {
 
     } else {
 
-      val defaultValidNotAfter = DateUtil.nowUTC.getMillis + maxTTL
+      val defaultValidNotAfter = DateTime.now(DateTimeZone.UTC).getMillis + maxTTL
       val validNotAfterSet = pubKeySet.map(_.pubKeyInfo.validNotAfter).map {
         case None => defaultValidNotAfter
         case Some(validNotAfter) => validNotAfter.getMillis
@@ -161,7 +161,7 @@ object RedisCache extends StrictLogging {
 
       } else {
 
-        val now = DateUtil.nowUTC.getMillis
+        val now = DateTime.now(DateTimeZone.UTC).getMillis
         (earliestValidNotAfter - now / 1000).toInt
 
       }

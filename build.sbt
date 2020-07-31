@@ -46,7 +46,6 @@ lazy val ubirchIdServiceClient = (project in file("."))
  ********************************************************/
 
 lazy val dependencies = Seq(
-  ubirchDate,
   akkaHttp,
   akkaStream,
   akkaSlf4j,
@@ -105,7 +104,6 @@ val excludedLoggers = Seq(
 )
 
 val ubirchCrypto = "com.ubirch" % "ubirch-crypto" % "2.1.0" excludeAll (excludedLoggers: _*)
-val ubirchDate = ubirchUtilG %% "date" % "0.5.3" excludeAll (excludedLoggers: _*)
 val ubirchDeepCheckModel = ubirchUtilG %% "deep-check-model" % "0.3.1" excludeAll (excludedLoggers: _*)
 val ubirchUtilRedisTestUtil = ubirchUtilG %% "redis-test-util" % "0.5.2"
 val ubirchUtilRedisUtil = ubirchUtilG %% "redis-util" % "0.5.2"
