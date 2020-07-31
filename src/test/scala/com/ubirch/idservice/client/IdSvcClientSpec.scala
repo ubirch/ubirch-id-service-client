@@ -18,7 +18,7 @@ import org.scalatest.{AsyncFeatureSpec, Matchers}
 
 class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
 
-  implicit val system: ActorSystem = ActorSystem("idServiceClientTest")
+  implicit val system: ActorSystem = ActorSystem("idServiceClientSpec")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val httpClient: HttpExt = Http()
 
@@ -28,8 +28,9 @@ class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging 
   private val signature = privateKey.sign(privateKey.getRawPublicKey)
   private val signatureAsString = Base64.getEncoder.encodeToString(signature)
   private val pubDelete = PublicKeyDelete(publicKey.pubKeyInfo.pubKeyId, signatureAsString)
+  private val pubDeleteFalseSignature = PublicKeyDelete(publicKey.pubKeyInfo.pubKeyId, "signatureAsString")
 
-  feature("check") {
+  feature("user service checks") {
 
     scenario("check") {
 
@@ -47,21 +48,21 @@ class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging 
     }
   }
 
-  feature("publish key") {
+  feature("key requests") {
 
+    scenario("get no valid public keys cached") {
+      IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
+        publicKeyOpt.nonEmpty shouldBe true
+        val publicKeySet = publicKeyOpt.get
+        publicKeySet.isEmpty shouldBe true
+      }
+    }
 
     scenario("post public key") {
 
       IdServiceClientCached.pubKeyPOST(publicKey).map { pubKeyOpt =>
         pubKeyOpt.nonEmpty shouldBe true
         pubKeyOpt.get shouldBe publicKey
-      }
-    }
-
-    scenario("get public key") {
-      IdServiceClientCached.findPubKey(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
-        publicKeyOpt.nonEmpty shouldBe true
-        publicKeyOpt.get shouldBe publicKey
       }
     }
 
@@ -86,12 +87,12 @@ class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging 
       }
     }
 
-    scenario("don't get public key") {
-      IdServiceClientCached.findPubKey(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
-        publicKeyOpt.nonEmpty shouldBe false
+    scenario("delete non existing public key") {
+
+      IdServiceClientCached.pubKeyDELETE(pubDeleteFalseSignature).map { success =>
+        success shouldBe false
       }
     }
-
 
   }
 

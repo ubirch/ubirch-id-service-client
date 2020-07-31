@@ -159,6 +159,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
             logErrorAndReturnNone(s"pubKeyDELETE() call to key-service failed: url=$url code=$code, status=${res.status}")
             Future(false)
 
+
         }
 
       case None =>
@@ -172,8 +173,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   /**
     * This method retrieves a specific (valid) pubKeys from the id service.
     */
-  def findPubKey(publicKey: String)
-                (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
+  protected def findPubKey(publicKey: String)
+                          (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
 
     logger.debug(s"publicKey: $publicKey")
     val url = IdClientConfig.findPubKey(publicKey)
@@ -192,9 +193,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
       case res@HttpResponse(code, _, _, _) =>
 
         res.discardEntityBytes()
-        Future(
-          logErrorAndReturnNone(s"findPubKey() call to key-service failed: url=$url code=$code, status=${res.status}")
-        )
+        logger.warn(s"findPubKey() call to key-service failed: url=$url code=$code, status=${res.status}")
+        Future(None)
 
     }
 
@@ -250,8 +250,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   /**
     * This method retrieves all valid pubKeys from the id service for a certain hardwareId.
     */
-  def currentlyValidPubKeys(hardwareId: String)
-                           (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[Set[PublicKey]]] = {
+  protected def currentlyValidPubKeys(hardwareId: String)
+                                     (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[Set[PublicKey]]] = {
 
     val url = IdClientConfig.currentlyValidPubKeys(hardwareId)
     httpClient.singleRequest(HttpRequest(uri = url)) flatMap {
@@ -265,10 +265,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
       case res@HttpResponse(code, _, _, _) =>
 
         res.discardEntityBytes()
-        Future(
-          logErrorAndReturnNone(s"currentlyValidPubKeys() call to key-service failed: url=$url, code=$code, status=${res.status}")
-        )
-
+        logger.warn(s"currentlyValidPubKeys() call to key-service failed: url=$url, code=$code, status=${res.status}")
+        Future(None)
     }
 
   }

@@ -76,34 +76,34 @@ object RedisCache extends StrictLogging {
 
     publicKeySetOpt match {
 
-      case None =>
-
-        Future(None)
-
-      case Some(result) =>
+      case Some(pubKeySet) if pubKeySet.nonEmpty =>
 
         val redis = RedisClientUtil.getRedisClient
 
-        val expiry = expireInSeconds(result)
+        val expiry = expireInSeconds(pubKeySet)
 
         val cacheKey = getRedisKeyForHardwareId(hardwareId)
-        val json = Json4sUtil.any2String(result).get
+
+        val json = Json4sUtil.any2String(pubKeySet).get
         redis.set[String](cacheKey, json, exSeconds = Some(expiry), NX = true) map {
 
           case true =>
 
-            logger.debug(s"cached valid public keys: key=$cacheKey (expiry = $expiry seconds)")
-            Some(result)
+            logger.debug(s"cached valid public keys $pubKeySet: key=$cacheKey (expiry = $expiry seconds)")
+            Some(pubKeySet)
 
           case false =>
 
-            logger.error(s"failed to add to key-service rest client cache: key=$cacheKey")
-            Some(result)
+            logger.error(s"failed to add pubKeys $pubKeySet to rest client cache: key=$cacheKey")
+            Some(pubKeySet)
 
         }
 
-    }
+      case _ =>
 
+        Future(Some(Set.empty))
+
+    }
   }
 
 

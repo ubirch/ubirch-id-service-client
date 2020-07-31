@@ -70,7 +70,11 @@ object IdServiceClientCached extends IdServiceClientBase {
 
         case Some(json) =>
 
-          Future(Some(read[Set[PublicKey]](json)))
+          val pubKeySet = read[Set[PublicKey]](json)
+          if (pubKeySet.isEmpty)
+            super.currentlyValidPubKeys(hardwareId) flatMap (RedisCache.cacheValidKeys(hardwareId, _))
+          else
+            Future(Some(pubKeySet))
 
       }
     } catch {
