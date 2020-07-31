@@ -11,24 +11,24 @@ object IdClientConfig extends ConfigBase {
     *
     * @return host
     */
-  private def host = config.getString(IdClientConstants.HOST)
+  private def host = config.getString(IdClientConfigKeys.HOST)
 
-  val urlCheck = s"$host${IdClientConstants.pathCheck}"
+  val urlCheck = s"$host${IdClientConfigKeys.pathCheck}"
 
-  val urlDeepCheck = s"$host${IdClientConstants.pathDeepCheck}"
+  val urlDeepCheck = s"$host${IdClientConfigKeys.pathDeepCheck}"
 
-  val pubKey = s"$host${IdClientConstants.pathPubKey}"
+  val pubKey = s"$host${IdClientConfigKeys.pathPubKey}"
 
-  val pubKeyRevoke = s"$host${IdClientConstants.pathPubKeyRevoke}"
+  val pubKeyRevoke = s"$host${IdClientConfigKeys.pathPubKeyRevoke}"
 
   def findPubKey(pubKeyString: String): String = {
     s"$pubKey/${URLEncoder.encode(pubKeyString, "UTF-8")}"
   }
 
-  def currentlyValidPubKeys(hardwareId: String) = s"$host${IdClientConstants.pathPubKeyCurrentHardwareId(hardwareId)}"
+  def currentlyValidPubKeys(hardwareId: String) = s"$host${IdClientConfigKeys.pathPubKeyCurrentHardwareId(hardwareId)}"
 
   /**
     * @return maximum time-to-live in seconds for records to cache
     */
-  def maxTTL: Int = config.getInt(IdClientConstants.maxTTL)
+  def maxTTL: Int = config.getInt(IdClientConfigKeys.maxTTL)
 }
