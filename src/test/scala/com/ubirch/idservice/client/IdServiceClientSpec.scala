@@ -9,14 +9,14 @@ import com.typesafe.scalalogging.slf4j.StrictLogging
 import com.ubirch.crypto.utils.Curve
 import com.ubirch.crypto.{GeneratorKeyFactory, PrivKey}
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyDelete, PublicKeyInfo}
-import com.ubirch.util.date.DateUtil
 import com.ubirch.util.json.JsonFormats
+import org.joda.time.{DateTime, DateTimeZone}
 import org.json4s.Formats
 import org.json4s.native.Serialization.write
 import org.scalatest.{AsyncFeatureSpec, Matchers}
 
 
-class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
+class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
 
   implicit val system: ActorSystem = ActorSystem("idServiceClientSpec")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -99,7 +99,7 @@ class IdSvcClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging 
 
   private def getPublicKey(hardwareDeviceId: String = UUID.randomUUID().toString) = {
 
-    val created = DateUtil.nowUTC
+    val created = DateTime.now(DateTimeZone.UTC)
     val validNotAfter = Some(created.plusMonths(6))
 
     val curve = Curve.Ed25519

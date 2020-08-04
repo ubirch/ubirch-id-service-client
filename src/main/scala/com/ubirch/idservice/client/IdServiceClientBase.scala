@@ -5,7 +5,7 @@ import akka.http.scaladsl.model._
 import akka.stream.Materializer
 import akka.util.ByteString
 import com.typesafe.scalalogging.slf4j.StrictLogging
-import com.ubirch.idservice.client.config.IdClientConfig
+import com.ubirch.idservice.client.config.IdClientRoutes
 import com.ubirch.idservice.client.model._
 import com.ubirch.util.deepCheck.model.DeepCheckResponse
 import com.ubirch.util.deepCheck.util.DeepCheckResponseUtil
@@ -28,7 +28,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
     */
   def check()(implicit httpClient: HttpExt, materializer: Materializer): Future[Option[JsonResponse]] = {
 
-    val url = IdClientConfig.urlCheck
+    val url = IdClientRoutes.urlCheck
     httpClient.singleRequest(HttpRequest(uri = url)) flatMap {
 
       case HttpResponse(StatusCodes.OK, _, entity, _) =>
@@ -55,7 +55,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
 
     val statusCodes: Set[StatusCode] = Set(StatusCodes.OK, StatusCodes.ServiceUnavailable)
 
-    val url = IdClientConfig.urlDeepCheck
+    val url = IdClientRoutes.urlDeepCheck
     httpClient.singleRequest(HttpRequest(uri = url)) flatMap {
 
       case HttpResponse(status, _, entity, _) if statusCodes.contains(status) =>
@@ -89,7 +89,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
       case Some(pubKeyJsonString: String) =>
 
         logger.debug(s"pubKey (object): $pubKeyJsonString")
-        val url = IdClientConfig.pubKey
+        val url = IdClientRoutes.pubKey
         val req = HttpRequest(
           method = HttpMethods.POST,
           uri = url,
@@ -140,7 +140,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
       case Some(pubKeyDeleteString: String) =>
 
         logger.debug(s"pubKeyDelete (object): $pubKeyDeleteString")
-        val url = IdClientConfig.pubKey
+        val url = IdClientRoutes.pubKey
         val req = HttpRequest(
           method = HttpMethods.DELETE,
           uri = url,
@@ -177,7 +177,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
                           (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
 
     logger.debug(s"publicKey: $publicKey")
-    val url = IdClientConfig.findPubKey(publicKey)
+    val url = IdClientRoutes.findPubKey(publicKey)
     val req = HttpRequest(
       method = HttpMethods.GET,
       uri = url
@@ -214,7 +214,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
       case Some(revokeJsonString: String) =>
 
         logger.debug(s"revoke public key (JSON): $revokeJsonString")
-        val url = IdClientConfig.pubKeyRevoke
+        val url = IdClientRoutes.pubKeyRevoke
         val req = HttpRequest(
           method = HttpMethods.POST,
           uri = url,
@@ -253,7 +253,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   protected def currentlyValidPubKeys(hardwareId: String)
                                      (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[Set[PublicKey]]] = {
 
-    val url = IdClientConfig.currentlyValidPubKeys(hardwareId)
+    val url = IdClientRoutes.currentlyValidPubKeys(hardwareId)
     httpClient.singleRequest(HttpRequest(uri = url)) flatMap {
 
       case HttpResponse(StatusCodes.OK, _, entity, _) =>

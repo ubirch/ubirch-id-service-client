@@ -1,7 +1,6 @@
 package com.ubirch.idservice.client.model
 
-import com.ubirch.util.date.DateUtil
-import org.joda.time.DateTime
+import org.joda.time.{DateTime, DateTimeZone}
 
 case class SignedRevoke(revokation: Revokation,
                         signature: String
@@ -10,5 +9,5 @@ case class SignedRevoke(revokation: Revokation,
 // fields should be ordered alphabetically as some client libs only produce JSON with alphabetically ordered fields!!!
 case class Revokation(curveAlgorithm: String,
                       publicKey: String,
-                      revokationDate: DateTime = DateUtil.nowUTC
+                      revokationDate: DateTime = DateTime.now(DateTimeZone.UTC)
                      )

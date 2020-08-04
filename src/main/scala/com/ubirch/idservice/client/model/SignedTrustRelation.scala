@@ -1,7 +1,6 @@
 package com.ubirch.idservice.client.model
 
-import com.ubirch.util.date.DateUtil
-import org.joda.time.DateTime
+import org.joda.time.{DateTime, DateTimeZone}
 
 /**
   * author: cvandrei
@@ -12,7 +11,7 @@ case class SignedTrustRelation(trustRelation: TrustRelation,
                               )
 
 // fields should be ordered alphabetically as some client libs only produce JSON with alphabetically ordered fields!!!
-case class TrustRelation(created: DateTime = DateUtil.nowUTC,
+case class TrustRelation(created: DateTime = DateTime.now(DateTimeZone.UTC),
                          curveAlgorithm: String,
                          sourcePublicKey: String,
                          targetPublicKey: String,
