@@ -15,7 +15,6 @@ import org.json4s.Formats
 import org.json4s.native.Serialization.write
 import org.scalatest.{AsyncFeatureSpec, Matchers}
 
-
 class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
 
   implicit val system: ActorSystem = ActorSystem("idServiceClientSpec")
@@ -96,7 +95,6 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
 
   }
 
-
   private def getPublicKey(hardwareDeviceId: String = UUID.randomUUID().toString) = {
 
     val created = DateTime.now(DateTimeZone.UTC)
@@ -114,7 +112,8 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
       pubKey = newPublicKey,
       pubKeyId = newPublicKey,
       prevPubKeyId = None,
-      validNotAfter = validNotAfter)
+      validNotAfter = validNotAfter
+    )
 
     val signature = sign(pubKeyInfo, newPrivKey)
 

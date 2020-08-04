@@ -24,7 +24,6 @@ case class PublicKeyInfo(
                           validNotBefore: DateTime = DateTime.now(DateTimeZone.UTC)
                         )
 
-
 /**
   * Represents a public key info and its signature. Used for Json Requests.
   *
@@ -32,7 +31,6 @@ case class PublicKeyInfo(
   * @param signature  Represents the signature of the pubKeyInfo
   */
 case class PublicKey(pubKeyInfo: PublicKeyInfo, signature: String, prevSignature: Option[String] = None)
-
 
 /**
   * Represents a Deletion Requests.

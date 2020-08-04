@@ -22,7 +22,6 @@ import scala.concurrent.Future
   */
 trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
 
-
   /**
     * This method calls the deepCheck endpoint of the id-service.
     */
@@ -159,7 +158,6 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
             logErrorAndReturnNone(s"pubKeyDELETE() call to key-service failed: url=$url code=$code, status=${res.status}")
             Future(false)
 
-
         }
 
       case None =>
@@ -205,7 +203,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
     *
     * @return
     */
-  @deprecated
+  @deprecated("this method cannot be used at the moment, but will become re-implemented", "ubirch-id-service-client 0.1.0-SNAPSHOT")
   def pubKeyRevokePOST(signedRevoke: SignedRevoke)
                       (implicit httpClient: HttpExt, materializer: Materializer): Future[Either[JsonErrorResponse, PublicKey]] = {
 
@@ -271,8 +269,9 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
 
   }
 
-  private def logErrorAndReturnNone[T](errorMsg: String,
-                                       t: Option[Throwable] = None
+  private def logErrorAndReturnNone[T](
+                                        errorMsg: String,
+                                        t: Option[Throwable] = None
                                       ): Option[T] = {
     t match {
       case None => logger.error(errorMsg)
@@ -282,6 +281,5 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
     None
 
   }
-
 
 }
