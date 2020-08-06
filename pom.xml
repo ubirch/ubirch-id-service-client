@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ubirch.id</groupId>
-    <artifactId>ubirch-id-service-client</artifactId>
+    <artifactId>ubirch-id-service-client_${scala.major.version}</artifactId>
     <version>0.6.4</version>
     <packaging>jar</packaging>
 
@@ -33,7 +33,7 @@
     </licenses>
 
     <name>Ubirch Id Service Client [${project.version}]</name>
-    <description>Client that can be used to communicate with Ubirch Id Service</description>
+    <description>Scala rest client that can be used to communicate with Ubirch Id Service</description>
     <url>https://ubirch.com/</url>
 
     <organization>
@@ -64,7 +64,6 @@
         <scala.version>2.11.12</scala.version>
         <scala.compat.version>2.11</scala.compat.version>
         <scalatest.version>3.0.5</scalatest.version>
-        <scala.logging.version>3.7.2</scala.logging.version>
 
         <ubirch-crypto.version>2.1.0</ubirch-crypto.version>
         <deep-check-model.version>0.3.1</deep-check-model.version>
@@ -75,11 +74,9 @@
         <akka-stream.version>2.5.11</akka-stream.version>
 
         <slf4j.api.version>1.7.25</slf4j.api.version>
-        <logback-classic.version>1.2.3</logback-classic.version>
-        <log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
-        <jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
-        <logstash-logback-encoder.version>5.3</logstash-logback-encoder.version>
-
+        <logback.version>1.2.3</logback.version>
+        <scala.logging.version>3.7.2</scala.logging.version>
+        <logback-elasticsearch.version>1.5</logback-elasticsearch.version>
 
         <!-- plugins -->
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
@@ -102,7 +99,19 @@
             <id>ossrh-release</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
+        <repository>
+            <id>io.cloudrepo.public</id>
+            <url>https://ubirch.mycloudrepo.io/repositories/ubirch-elasticsearch-util</url>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>io.cloudrepo.public</id>
+            <name>Ubirch Public Cloud Repo Repository</name>
+            <url>https://ubirch.mycloudrepo.io/repositories/ubirch-elasticsearch-util</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
@@ -148,13 +157,6 @@
             <version>${akka-stream.version}</version>
         </dependency>
 
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.ubirch</groupId>-->
-        <!--            <artifactId>ubirch-client-scala</artifactId>-->
-        <!--            <version>1.1-SNAPSHOT</version>-->
-        <!--        </dependency>-->
-
         <!-- Scala -->
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -164,9 +166,23 @@
 
         <!-- Logging -->
 
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.api.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
             <version>${slf4j.api.version}</version>
         </dependency>
 
@@ -174,27 +190,27 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback-classic.version}</version>
+            <version>${logback.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.slf4j/log4j-over-slf4j -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>${log4j-over-slf4j.version}</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${jcl-over-slf4j.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.typesafe.scala-logging</groupId>
             <artifactId>scala-logging_${scala.compat.version}</artifactId>
             <version>${scala.logging.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.internetitem</groupId>
+            <artifactId>logback-elasticsearch-appender</artifactId>
+            <version>${logback-elasticsearch.version}</version>
         </dependency>
 
         <!-- test dependencies -->
@@ -332,7 +348,7 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>${maven-deploy-plugin.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>

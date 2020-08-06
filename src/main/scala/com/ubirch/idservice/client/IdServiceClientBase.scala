@@ -169,7 +169,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method retrieves a specific (valid) pubKeys from the id service.
+    * Prefer to use findValidPubKeyCached(), especially when queried often for same publicKey!
+    * This method retrieves a specific (valid) pubKeys from the id service without caching the response.
     */
   protected def findPubKey(publicKey: String)
                           (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
