@@ -1,7 +1,7 @@
 package com.ubirch.idservice.client
 
 import akka.actor.ActorSystem
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.idservice.client.config.IdClientConfig
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyInfo}
 import com.ubirch.util.json.Json4sUtil

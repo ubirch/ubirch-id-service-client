@@ -4,7 +4,7 @@ import akka.http.scaladsl.HttpExt
 import akka.http.scaladsl.model._
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.idservice.client.config.IdClientRoutes
 import com.ubirch.idservice.client.model._
 import com.ubirch.util.deepCheck.model.DeepCheckResponse

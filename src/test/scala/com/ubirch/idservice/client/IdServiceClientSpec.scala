@@ -5,7 +5,7 @@ import java.util.{Base64, UUID}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{Http, HttpExt}
 import akka.stream.ActorMaterializer
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.crypto.utils.Curve
 import com.ubirch.crypto.{GeneratorKeyFactory, PrivKey}
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyDelete, PublicKeyInfo}
