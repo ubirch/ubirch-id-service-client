@@ -111,7 +111,7 @@ object RedisCache extends StrictLogging {
     *
     * @return seconds for cache entry to live
     */
-  private def expireInSeconds(pubKeyInfo: PublicKeyInfo): Int = {
+  def expireInSeconds(pubKeyInfo: PublicKeyInfo): Int = {
 
     val maxTTL = IdClientConfig.maxTTL
     val now = DateTime.now(DateTimeZone.UTC)
@@ -135,7 +135,7 @@ object RedisCache extends StrictLogging {
     *
     * @return seconds for cache entry to live
     */
-  private def expireInSeconds(pubKeySet: Set[PublicKey]): Int = {
+  def expireInSeconds(pubKeySet: Set[PublicKey]): Int = {
 
     val maxTTL = IdClientConfig.maxTTL
 

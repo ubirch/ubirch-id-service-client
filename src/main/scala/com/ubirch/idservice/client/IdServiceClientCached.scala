@@ -39,7 +39,10 @@ object IdServiceClientCached extends IdServiceClientBase {
           super.findPubKey(publicKey) flatMap RedisCache.cacheValidPublicKey
 
         case Some(json) =>
-          Future(Some(read[PublicKey](json)))
+          val publicKey = read[PublicKey](json)
+          val expireSeconds = RedisCache.expireInSeconds(publicKey.pubKeyInfo)
+          redis.expire(cacheKey, expireSeconds)
+          Future(Some(publicKey))
 
       }
     } catch {
@@ -73,8 +76,11 @@ object IdServiceClientCached extends IdServiceClientBase {
           val pubKeySet = read[Set[PublicKey]](json)
           if (pubKeySet.isEmpty)
             super.currentlyValidPubKeys(hardwareId) flatMap (RedisCache.cacheValidKeys(hardwareId, _))
-          else
+          else {
+            val expireSeconds = RedisCache.expireInSeconds(pubKeySet)
+            redis.expire(cacheKey, expireSeconds)
             Future(Some(pubKeySet))
+          }
 
       }
     } catch {
