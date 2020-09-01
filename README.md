@@ -14,7 +14,7 @@ The URL of the ubirch-id-service must be set as well as the redis cache max time
 
 ubirchIdService.client {
   rest.host = "http://localhost:8081"
-  redis.cache.maxTTL = 86400 // 24 hours in seconds
+  redis.cache.maxTTL = 900 // 15 minutes in seconds
 }
 
 The redis host and port need to be set by:

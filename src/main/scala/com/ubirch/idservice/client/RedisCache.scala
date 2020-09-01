@@ -145,7 +145,7 @@ object RedisCache extends StrictLogging {
 
     } else {
 
-      val defaultValidNotAfter = DateTime.now(DateTimeZone.UTC).getMillis + maxTTL
+      val defaultValidNotAfter = DateTime.now(DateTimeZone.UTC).plusSeconds(maxTTL).getMillis
       val validNotAfterSet = pubKeySet.map(_.pubKeyInfo.validNotAfter).map {
         case None => defaultValidNotAfter
         case Some(validNotAfter) => validNotAfter.getMillis
