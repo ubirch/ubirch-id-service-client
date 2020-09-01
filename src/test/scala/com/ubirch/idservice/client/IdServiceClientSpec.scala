@@ -5,7 +5,7 @@ import java.util.{Base64, UUID}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{Http, HttpExt}
 import akka.stream.ActorMaterializer
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.crypto.utils.Curve
 import com.ubirch.crypto.{GeneratorKeyFactory, PrivKey}
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyDelete, PublicKeyInfo}
@@ -14,7 +14,6 @@ import org.joda.time.{DateTime, DateTimeZone}
 import org.json4s.Formats
 import org.json4s.native.Serialization.write
 import org.scalatest.{AsyncFeatureSpec, Matchers}
-
 
 class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
 
@@ -96,7 +95,6 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
 
   }
 
-
   private def getPublicKey(hardwareDeviceId: String = UUID.randomUUID().toString) = {
 
     val created = DateTime.now(DateTimeZone.UTC)
@@ -114,7 +112,8 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
       pubKey = newPublicKey,
       pubKeyId = newPublicKey,
       prevPubKeyId = None,
-      validNotAfter = validNotAfter)
+      validNotAfter = validNotAfter
+    )
 
     val signature = sign(pubKeyInfo, newPrivKey)
 

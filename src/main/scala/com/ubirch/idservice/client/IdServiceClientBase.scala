@@ -4,7 +4,7 @@ import akka.http.scaladsl.HttpExt
 import akka.http.scaladsl.model._
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.idservice.client.config.IdClientRoutes
 import com.ubirch.idservice.client.model._
 import com.ubirch.util.deepCheck.model.DeepCheckResponse
@@ -21,7 +21,6 @@ import scala.concurrent.Future
   * For a cached implementation use IdServiceClientCached.
   */
 trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
-
 
   /**
     * This method calls the deepCheck endpoint of the id-service.
@@ -159,7 +158,6 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
             logErrorAndReturnNone(s"pubKeyDELETE() call to key-service failed: url=$url code=$code, status=${res.status}")
             Future(false)
 
-
         }
 
       case None =>
@@ -171,7 +169,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method retrieves a specific (valid) pubKeys from the id service.
+    * Prefer to use findValidPubKeyCached(), especially when queried often for same publicKey!
+    * This method retrieves a specific (valid) pubKeys from the id service without caching the response.
     */
   protected def findPubKey(publicKey: String)
                           (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
@@ -205,7 +204,7 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
     *
     * @return
     */
-  @deprecated
+  @deprecated("this method cannot be used at the moment, but will become re-implemented", "ubirch-id-service-client 0.1.0-SNAPSHOT")
   def pubKeyRevokePOST(signedRevoke: SignedRevoke)
                       (implicit httpClient: HttpExt, materializer: Materializer): Future[Either[JsonErrorResponse, PublicKey]] = {
 
@@ -271,8 +270,9 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
 
   }
 
-  private def logErrorAndReturnNone[T](errorMsg: String,
-                                       t: Option[Throwable] = None
+  private def logErrorAndReturnNone[T](
+                                        errorMsg: String,
+                                        t: Option[Throwable] = None
                                       ): Option[T] = {
     t match {
       case None => logger.error(errorMsg)
@@ -282,6 +282,5 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
     None
 
   }
-
 
 }

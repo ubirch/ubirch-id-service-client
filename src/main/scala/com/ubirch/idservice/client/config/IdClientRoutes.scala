@@ -20,5 +20,4 @@ object IdClientRoutes {
 
   def currentlyValidPubKeys(hardwareId: String) = s"$host${IdClientRouteKeys.pathPubKeyCurrentHardwareId(hardwareId)}"
 
-
 }

@@ -11,7 +11,6 @@ object IdClientConfig extends ConfigBase {
     */
   def host: String = config.getString(IdClientConfigKeys.HOST)
 
-
   /**
     * @return maximum time-to-live in seconds for records to cache
     */

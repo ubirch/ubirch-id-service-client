@@ -1,8 +1,7 @@
 package com.ubirch.idservice.client
 
-
 import akka.actor.ActorSystem
-import com.typesafe.scalalogging.slf4j.StrictLogging
+import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.idservice.client.config.IdClientConfig
 import com.ubirch.idservice.client.model.{PublicKey, PublicKeyInfo}
 import com.ubirch.util.json.Json4sUtil
@@ -18,7 +17,6 @@ object RedisCache extends StrictLogging {
   def getRedisKeyForPublicKey(publicKey: String): String = s"$keyRoot.publicKey.$publicKey"
 
   def getRedisKeyForHardwareId(hardwareId: String): String = s"$keyRoot.hardwareId.$hardwareId"
-
 
   /**
     * Caches a public key in Redis if necessary.
@@ -105,7 +103,6 @@ object RedisCache extends StrictLogging {
 
     }
   }
-
 
   /**
     * This method checks how long the key still is valid and takes either
