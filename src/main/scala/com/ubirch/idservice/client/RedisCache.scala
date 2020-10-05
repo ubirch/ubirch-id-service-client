@@ -92,7 +92,7 @@ object RedisCache extends StrictLogging {
 
           case false =>
 
-            logger.error(s"failed to add pubKeys $pubKeySet to rest client cache: key=$cacheKey")
+            logger.debug(s"pubKey set $pubKeySet  wasn't stored to rest client cache, as it already existed: key=$cacheKey")
             Some(pubKeySet)
 
         }
