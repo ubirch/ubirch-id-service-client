@@ -19,12 +19,12 @@ object RedisCache extends StrictLogging {
   def getRedisKeyForHardwareId(hardwareId: String): String = s"$keyRoot.hardwareId.$hardwareId"
 
   /**
-    * Caches a public key in Redis if necessary.
-    * The input result from a request to the `key-service` for a public key.
-    *
-    * @param publicKeyOpt public key to add to cache
-    * @return the unchanged input after trying to cache it if necessary
-    */
+   * Caches a public key in Redis if necessary.
+   * The input result from a request to the `key-service` for a public key.
+   *
+   * @param publicKeyOpt public key to add to cache
+   * @return the unchanged input after trying to cache it if necessary
+   */
   def cacheValidPublicKey(publicKeyOpt: Option[PublicKey])
                          (implicit system: ActorSystem): Future[Option[PublicKey]] = {
     implicit val ec: ExecutionContextExecutor = system.dispatcher
@@ -61,13 +61,13 @@ object RedisCache extends StrictLogging {
   }
 
   /**
-    * Caches a set of valid public keys in Redis if necessary. The input result from a request to the `key-service` for
-    * all currently valid public keys.
-    *
-    * @param hardwareId      hardwareId the set of public keys belongs to
-    * @param publicKeySetOpt set of public keys to add to cache
-    * @return the unchanged input after trying to cache it if necessary
-    */
+   * Caches a set of valid public keys in Redis if necessary. The input result from a request to the `key-service` for
+   * all currently valid public keys.
+   *
+   * @param hardwareId      hardwareId the set of public keys belongs to
+   * @param publicKeySetOpt set of public keys to add to cache
+   * @return the unchanged input after trying to cache it if necessary
+   */
   def cacheValidKeys(hardwareId: String, publicKeySetOpt: Option[Set[PublicKey]])
                     (implicit system: ActorSystem): Future[Option[Set[PublicKey]]] = {
     implicit val ec: ExecutionContextExecutor = system.dispatcher
@@ -105,12 +105,12 @@ object RedisCache extends StrictLogging {
   }
 
   /**
-    * This method checks how long the key still is valid and takes either
-    * the configured maxTTL or the keys notValidAfter date, depending on
-    * which expires first.
-    *
-    * @return seconds for cache entry to live
-    */
+   * This method checks how long the key still is valid and takes either
+   * the configured maxTTL or the keys notValidAfter date, depending on
+   * which expires first.
+   *
+   * @return seconds for cache entry to live
+   */
   def expireInSeconds(pubKeyInfo: PublicKeyInfo): Int = {
 
     val maxTTL = IdClientConfig.maxTTL
@@ -129,12 +129,12 @@ object RedisCache extends StrictLogging {
   }
 
   /**
-    * This method checks how long the keys are valid and takes either
-    * the configured maxTTL or the earliest validNotAfter date of the keys,
-    * depending on which expires first.
-    *
-    * @return seconds for cache entry to live
-    */
+   * This method checks how long the keys are valid and takes either
+   * the configured maxTTL or the earliest validNotAfter date of the keys,
+   * depending on which expires first.
+   *
+   * @return seconds for cache entry to live
+   */
   def expireInSeconds(pubKeySet: Set[PublicKey]): Int = {
 
     val maxTTL = IdClientConfig.maxTTL
