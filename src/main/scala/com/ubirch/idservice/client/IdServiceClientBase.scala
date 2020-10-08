@@ -8,6 +8,7 @@ import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.idservice.client.config.IdClientRoutes
 import com.ubirch.idservice.client.model._
 import com.ubirch.util.deepCheck.model.DeepCheckResponse
+import com.ubirch.util.deepCheck.util.DeepCheckResponseUtil
 import com.ubirch.util.json.{Json4sUtil, MyJsonProtocol}
 import com.ubirch.util.model.{JsonErrorResponse, JsonResponse}
 import org.json4s.native.Serialization.read
