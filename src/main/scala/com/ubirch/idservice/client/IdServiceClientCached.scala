@@ -22,9 +22,9 @@ object IdServiceClientCached extends IdServiceClientBase {
   private def getRedisKeyForHardwareId(hardwareId: String): String = s"$keyRoot.hardwareId.$hardwareId"
 
   /**
-    * This method retrieves a specific valid publicKey from the cache or
-    * the id-service and caches it, if it's not cached yet.
-    */
+   * This method retrieves a specific valid publicKey from the cache or
+   * the id-service and caches it, if it's not cached yet.
+   */
   def findValidPubKeyCached(publicKey: String)
                            (implicit httpClient: HttpExt, materializer: Materializer, system: ActorSystem): Future[Option[PublicKey]] = {
 
@@ -53,9 +53,9 @@ object IdServiceClientCached extends IdServiceClientBase {
   }
 
   /**
-    * This method retrieves all valid publicKeys from the cache or the id-service
-    * for a certain hardwareId and caches them, if they are not yet.
-    */
+   * This method retrieves all valid publicKeys from the cache or the id-service
+   * for a certain hardwareId and caches them, if they are not yet.
+   */
   def currentlyValidPubKeysCached(hardwareId: String)
                                  (implicit httpClient: HttpExt, materializer: Materializer, system: ActorSystem): Future[Option[Set[PublicKey]]] = {
 

@@ -3,9 +3,9 @@ package com.ubirch.idservice.client.model
 import org.joda.time.{DateTime, DateTimeZone}
 
 /**
-  * author: cvandrei
-  * since: 2018-09-06
-  */
+ * author: cvandrei
+ * since: 2018-09-06
+ */
 case class SignedTrustRelation(trustRelation: TrustRelation, signature: String)
 
 // fields should be ordered alphabetically as some client libs only produce JSON with alphabetically ordered fields!!!

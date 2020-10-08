@@ -76,10 +76,10 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method posts a specific pubKey to the id service.
-    *
-    * @return Some[PublicKey] in case of success else None
-    */
+   * This method posts a specific pubKey to the id service.
+   *
+   * @return Some[PublicKey] in case of success else None
+   */
   def pubKeyPOST(publicKey: PublicKey)
                 (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
 
@@ -126,11 +126,11 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method deletes a specific pubKey from the id service by sending the pubkey
-    * and a signature of the private key.
-    *
-    * @return true in case of success
-    */
+   * This method deletes a specific pubKey from the id service by sending the pubkey
+   * and a signature of the private key.
+   *
+   * @return true in case of success
+   */
   def pubKeyDELETE(publicKeyDelete: PublicKeyDelete)
                   (implicit httpClient: HttpExt, materializer: Materializer): Future[Boolean] = {
 
@@ -169,9 +169,9 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * Prefer to use findValidPubKeyCached(), especially when queried often for same publicKey!
-    * This method retrieves a specific (valid) pubKeys from the id service without caching the response.
-    */
+   * Prefer to use findValidPubKeyCached(), especially when queried often for same publicKey!
+   * This method retrieves a specific (valid) pubKeys from the id service without caching the response.
+   */
   protected def findPubKey(publicKey: String)
                           (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[PublicKey]] = {
 
@@ -200,10 +200,10 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method is deprecated and has to become updated, after the revoke endpoint has been added in the new id-service.
-    *
-    * @return
-    */
+   * This method is deprecated and has to become updated, after the revoke endpoint has been added in the new id-service.
+   *
+   * @return
+   */
   @deprecated("this method cannot be used at the moment, but will become re-implemented", "ubirch-id-service-client 0.1.0-SNAPSHOT")
   def pubKeyRevokePOST(signedRevoke: SignedRevoke)
                       (implicit httpClient: HttpExt, materializer: Materializer): Future[Either[JsonErrorResponse, PublicKey]] = {
@@ -247,8 +247,8 @@ trait IdServiceClientBase extends MyJsonProtocol with StrictLogging {
   }
 
   /**
-    * This method retrieves all valid pubKeys from the id service for a certain hardwareId.
-    */
+   * This method retrieves all valid pubKeys from the id service for a certain hardwareId.
+   */
   protected def currentlyValidPubKeys(hardwareId: String)
                                      (implicit httpClient: HttpExt, materializer: Materializer): Future[Option[Set[PublicKey]]] = {
 

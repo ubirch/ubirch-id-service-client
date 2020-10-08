@@ -5,6 +5,7 @@ import java.util.{Base64, UUID}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{Http, HttpExt}
 import akka.stream.ActorMaterializer
+import com.github.sebruck.EmbeddedRedis
 import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.crypto.utils.Curve
 import com.ubirch.crypto.{GeneratorKeyFactory, PrivKey}
@@ -15,7 +16,7 @@ import org.json4s.Formats
 import org.json4s.native.Serialization.write
 import org.scalatest.{AsyncFeatureSpec, Matchers}
 
-class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogging {
+class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRedis with StrictLogging {
 
   implicit val system: ActorSystem = ActorSystem("idServiceClientSpec")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -32,7 +33,6 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
   feature("user service checks") {
 
     scenario("check") {
-
       IdServiceClientCached.check() map { jsonResponseOpt =>
         jsonResponseOpt.nonEmpty shouldBe true
         jsonResponseOpt.get.status shouldBe "OK"
@@ -40,7 +40,6 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
     }
 
     scenario("deepCheck") {
-
       IdServiceClientCached.deepCheck() map { deepCheckResponse =>
         deepCheckResponse.status shouldBe true
       }
@@ -50,15 +49,16 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
   feature("key requests") {
 
     scenario("get no valid public keys cached") {
-      IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
-        publicKeyOpt.nonEmpty shouldBe true
-        val publicKeySet = publicKeyOpt.get
-        publicKeySet.isEmpty shouldBe true
+      withRedisAsync(6379) { port =>
+        IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
+          publicKeyOpt.nonEmpty shouldBe true
+          val publicKeySet = publicKeyOpt.get
+          publicKeySet.isEmpty shouldBe true
+        }
       }
     }
 
     scenario("post public key") {
-
       IdServiceClientCached.pubKeyPOST(publicKey).map { pubKeyOpt =>
         pubKeyOpt.nonEmpty shouldBe true
         pubKeyOpt.get shouldBe publicKey
@@ -66,16 +66,20 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with StrictLogg
     }
 
     scenario("get public key cached") {
-      IdServiceClientCached.findValidPubKeyCached(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
-        publicKeyOpt.nonEmpty shouldBe true
-        publicKeyOpt.get shouldBe publicKey
+      withRedisAsync(6379) { port =>
+        IdServiceClientCached.findValidPubKeyCached(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
+          publicKeyOpt.nonEmpty shouldBe true
+          publicKeyOpt.get shouldBe publicKey
+        }
       }
     }
 
     scenario("get valid public keys cached") {
-      IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
-        publicKeyOpt.nonEmpty shouldBe true
-        publicKeyOpt.get shouldBe Set(publicKey)
+      withRedisAsync(6379) { port =>
+        IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
+          publicKeyOpt.nonEmpty shouldBe true
+          publicKeyOpt.get shouldBe Set(publicKey)
+        }
       }
     }
 

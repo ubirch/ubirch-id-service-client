@@ -1,8 +1,8 @@
 package com.ubirch.idservice.client.model
 
 /**
-  * Represents a simple Response object. Used for HTTP responses.
-  */
+ * Represents a simple Response object. Used for HTTP responses.
+ */
 sealed trait Response[T] {
   val version: String
   val status: T
@@ -13,34 +13,34 @@ object Response {
 }
 
 /**
-  * Represents an OK Response object
-  *
-  * @param version the version of the response
-  * @param status  the status of the response. OK
-  * @param message the message of the response
-  */
+ * Represents an OK Response object
+ *
+ * @param version the version of the response
+ * @param status  the status of the response. OK
+ * @param message the message of the response
+ */
 case class Simple(version: String, status: Symbol, message: String) extends Response[Symbol]
 
 /**
-  * Companion object for the Simple response
-  */
+ * Companion object for the Simple response
+ */
 object Simple {
   def apply(message: String): Simple = new Simple(Response.version, 'OK, message)
 }
 
 /**
-  * Represents an Error Response.
-  *
-  * @param version      the version of the response
-  * @param status       the status of the response. NOK
-  * @param errorType    the error type
-  * @param errorMessage the message for the response
-  */
+ * Represents an Error Response.
+ *
+ * @param version      the version of the response
+ * @param status       the status of the response. NOK
+ * @param errorType    the error type
+ * @param errorMessage the message for the response
+ */
 case class NOK(version: String, status: Symbol, errorType: Symbol, errorMessage: String) extends Response[Symbol]
 
 /**
-  * Companion object for the NOK response
-  */
+ * Companion object for the NOK response
+ */
 object NOK {
 
   final val SERVER_ERROR = 'ServerError
@@ -70,21 +70,21 @@ object NOK {
 }
 
 /**
-  * Represents an OK Response object.
-  * This is just a convenience object to be compatible with
-  * one client that expects "messages" instead of "message"
-  * This response is meant only for the deep check used by other systems
-  * and added to keep backwards compatibility
-  *
-  * @param version  the version of the response
-  * @param status   the status of the response. True/False
-  * @param messages the messages of the response
-  */
+ * Represents an OK Response object.
+ * This is just a convenience object to be compatible with
+ * one client that expects "messages" instead of "message"
+ * This response is meant only for the deep check used by other systems
+ * and added to keep backwards compatibility
+ *
+ * @param version  the version of the response
+ * @param status   the status of the response. True/False
+ * @param messages the messages of the response
+ */
 case class BooleanListResponse(version: String, status: Boolean, messages: List[String]) extends Response[Boolean]
 
 /**
-  * Companion object for the Simple response
-  */
+ * Companion object for the Simple response
+ */
 object BooleanListResponse {
   def OK(message: String): BooleanListResponse = new BooleanListResponse(Response.version, status = true, List(message))
 
