@@ -36,6 +36,10 @@
     <description>Scala rest client that can be used to communicate with Ubirch Id Service</description>
     <url>https://ubirch.com/</url>
 
+    <scm>
+        <url>https://github.com/ubirch/ubirch-id-service-client</url>
+    </scm>
+
     <organization>
         <name>ubirch GmbH</name>
         <url>https://ubirch.com/</url>
@@ -301,6 +305,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.scoverage</groupId>
                 <artifactId>scoverage-maven-plugin</artifactId>
