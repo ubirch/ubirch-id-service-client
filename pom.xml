@@ -36,6 +36,10 @@
     <description>Scala rest client that can be used to communicate with Ubirch Id Service</description>
     <url>https://ubirch.com/</url>
 
+    <scm>
+        <url>https://github.com/ubirch/ubirch-id-service-client</url>
+    </scm>
+
     <organization>
         <name>ubirch GmbH</name>
         <url>https://ubirch.com/</url>
@@ -90,6 +94,32 @@
         <!-- plugins -->
 
     </properties>
+
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>ossrh-release</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>io.cloudrepo.public</id>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <url>https://ubirch.mycloudrepo.io/public/repositories/ubirch-utils-mvn</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>io.cloudrepo</id>
+            <name>Ubirch Public Cloud Repo Repository</name>
+            <url>https://ubirch.mycloudrepo.io/repositories/ubirch-utils-mvn</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
@@ -299,6 +329,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.scoverage</groupId>
                 <artifactId>scoverage-maven-plugin</artifactId>
