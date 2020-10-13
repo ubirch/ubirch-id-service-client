@@ -106,6 +106,9 @@
         </repository>
         <repository>
             <id>io.cloudrepo.public</id>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
             <url>https://ubirch.mycloudrepo.io/public/repositories/ubirch-utils-mvn</url>
         </repository>
     </repositories>
