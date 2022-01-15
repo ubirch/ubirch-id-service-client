@@ -1,10 +1,7 @@
 package com.ubirch.idservice.client
 
-import java.util.{Base64, UUID}
-
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{Http, HttpExt}
-import akka.stream.ActorMaterializer
 import com.github.sebruck.EmbeddedRedis
 import com.typesafe.scalalogging.StrictLogging
 import com.ubirch.crypto.utils.Curve
@@ -14,12 +11,14 @@ import com.ubirch.util.json.JsonFormats
 import org.joda.time.{DateTime, DateTimeZone}
 import org.json4s.Formats
 import org.json4s.native.Serialization.write
-import org.scalatest.{AsyncFeatureSpec, Matchers}
+import org.scalatest.featurespec.AsyncFeatureSpec
+import org.scalatest.matchers.should.Matchers
+
+import java.util.{Base64, UUID}
 
 class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRedis with StrictLogging {
 
   implicit val system: ActorSystem = ActorSystem("idServiceClientSpec")
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val httpClient: HttpExt = Http()
 
   implicit def json4sJacksonFormats: Formats = JsonFormats.default
@@ -30,25 +29,25 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
   private val pubDelete = PublicKeyDelete(publicKey.pubKeyInfo.pubKeyId, signatureAsString)
   private val pubDeleteFalseSignature = PublicKeyDelete(publicKey.pubKeyInfo.pubKeyId, "signatureAsString")
 
-  feature("user service checks") {
+  Feature("user service checks") {
 
-    scenario("check") {
+    Scenario("check") {
       IdServiceClientCached.check() map { jsonResponseOpt =>
         jsonResponseOpt.nonEmpty shouldBe true
         jsonResponseOpt.get.status shouldBe "OK"
       }
     }
 
-    scenario("deepCheck") {
+    Scenario("deepCheck") {
       IdServiceClientCached.deepCheck() map { deepCheckResponse =>
         deepCheckResponse.status shouldBe true
       }
     }
   }
 
-  feature("key requests") {
+  Feature("key requests") {
 
-    scenario("get no valid public keys cached") {
+    Scenario("get no valid public keys cached") {
       withRedisAsync(6379) { port =>
         IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
@@ -58,14 +57,14 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
       }
     }
 
-    scenario("post public key") {
+    Scenario("post public key") {
       IdServiceClientCached.pubKeyPOST(publicKey).map { pubKeyOpt =>
         pubKeyOpt.nonEmpty shouldBe true
         pubKeyOpt.get shouldBe publicKey
       }
     }
 
-    scenario("get public key cached") {
+    Scenario("get public key cached") {
       withRedisAsync(6379) { port =>
         IdServiceClientCached.findValidPubKeyCached(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
@@ -74,7 +73,7 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
       }
     }
 
-    scenario("get valid public keys cached") {
+    Scenario("get valid public keys cached") {
       withRedisAsync(6379) { port =>
         IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
@@ -83,14 +82,14 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
       }
     }
 
-    scenario("delete public key") {
+    Scenario("delete public key") {
 
       IdServiceClientCached.pubKeyDELETE(pubDelete).map { success =>
         success shouldBe true
       }
     }
 
-    scenario("delete non existing public key") {
+    Scenario("delete non existing public key") {
 
       IdServiceClientCached.pubKeyDELETE(pubDeleteFalseSignature).map { success =>
         success shouldBe false

@@ -32,7 +32,7 @@ object IdServiceClientCached extends IdServiceClientBase {
     implicit val ec: ExecutionContextExecutor = system.dispatcher
 
     try {
-      val redis = RedisClientUtil.getRedisClient
+      val redis = RedisClientUtil.getRedisClient()
       redis.get[String](cacheKey) flatMap {
 
         case None =>
@@ -64,7 +64,7 @@ object IdServiceClientCached extends IdServiceClientBase {
     val cacheKey = getRedisKeyForHardwareId(hardwareId)
 
     try {
-      val redis = RedisClientUtil.getRedisClient
+      val redis = RedisClientUtil.getRedisClient()
       redis.get[String](cacheKey) flatMap {
 
         case None =>

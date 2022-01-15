@@ -25,7 +25,7 @@ case class Simple(version: String, status: Symbol, message: String) extends Resp
  * Companion object for the Simple response
  */
 object Simple {
-  def apply(message: String): Simple = new Simple(Response.version, 'OK, message)
+  def apply(message: String): Simple = new Simple(Response.version, Symbol("OK"), message)
 }
 
 /**
@@ -43,15 +43,15 @@ case class NOK(version: String, status: Symbol, errorType: Symbol, errorMessage:
  */
 object NOK {
 
-  final val SERVER_ERROR = 'ServerError
-  final val PARSING_ERROR = 'ParsingError
-  final val NO_ROUTE_FOUND_ERROR = 'NoRouteFound
-  final val PUBKEY_ERROR = 'PubkeyError
-  final val CRS_ERROR = 'CertRequestError
-  final val CERT_ERROR = 'CertError
-  final val DELETE_ERROR = 'DeleteError
+  final val SERVER_ERROR = Symbol("ServerError")
+  final val PARSING_ERROR = Symbol("ParsingError")
+  final val NO_ROUTE_FOUND_ERROR = Symbol("NoRouteFound")
+  final val PUBKEY_ERROR = Symbol("PubkeyError")
+  final val CRS_ERROR = Symbol("CertRequestError")
+  final val CERT_ERROR = Symbol("CertError")
+  final val DELETE_ERROR = Symbol("DeleteError")
 
-  def apply(errorType: Symbol, errorMessage: String): NOK = new NOK(Response.version, 'NOK, errorType, errorMessage)
+  def apply(errorType: Symbol, errorMessage: String): NOK = new NOK(Response.version, Symbol("NOK"), errorType, errorMessage)
 
   def serverError(errorMessage: String): NOK = NOK(SERVER_ERROR, errorMessage)
 
