@@ -37,7 +37,7 @@ object RedisCache extends StrictLogging {
 
       case Some(result) =>
 
-        val redis = RedisClientUtil.getRedisClient
+        val redis = RedisClientUtil.getRedisClient()
         val expiry = expireInSeconds(result.pubKeyInfo)
         val pubKeyString = result.pubKeyInfo.pubKey
         val cacheKey = getRedisKeyForPublicKey(pubKeyString)
@@ -76,7 +76,7 @@ object RedisCache extends StrictLogging {
 
       case Some(pubKeySet) if pubKeySet.nonEmpty =>
 
-        val redis = RedisClientUtil.getRedisClient
+        val redis = RedisClientUtil.getRedisClient()
 
         val expiry = expireInSeconds(pubKeySet)
 
