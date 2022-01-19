@@ -48,7 +48,7 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
   Feature("key requests") {
 
     Scenario("get no valid public keys cached") {
-      withRedisAsync(6379) { port =>
+      withRedisAsync(6379) { _ =>
         IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
           val publicKeySet = publicKeyOpt.get
@@ -65,7 +65,7 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
     }
 
     Scenario("get public key cached") {
-      withRedisAsync(6379) { port =>
+      withRedisAsync(6379) { _ =>
         IdServiceClientCached.findValidPubKeyCached(publicKey.pubKeyInfo.pubKeyId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
           publicKeyOpt.get shouldBe publicKey
@@ -74,7 +74,7 @@ class IdServiceClientSpec extends AsyncFeatureSpec with Matchers with EmbeddedRe
     }
 
     Scenario("get valid public keys cached") {
-      withRedisAsync(6379) { port =>
+      withRedisAsync(6379) { _ =>
         IdServiceClientCached.currentlyValidPubKeysCached(publicKey.pubKeyInfo.hwDeviceId).map { publicKeyOpt =>
           publicKeyOpt.nonEmpty shouldBe true
           publicKeyOpt.get shouldBe Set(publicKey)
