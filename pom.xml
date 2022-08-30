@@ -80,7 +80,7 @@
         <scala.compat.version>2.13</scala.compat.version>
         <scalatest.version>3.2.10</scalatest.version>
 
-        <ubirch-crypto.version>2.1.4-SNAPSHOT</ubirch-crypto.version>
+        <ubirch-crypto.version>2.1.4</ubirch-crypto.version>
         <ubirch-deep-check.version>0.4.2</ubirch-deep-check.version>
         <ubirch-redis-utils.version>0.6.2</ubirch-redis-utils.version>
         <ubirch-response-utils.version>0.5.2</ubirch-response-utils.version>
