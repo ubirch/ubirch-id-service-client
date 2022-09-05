@@ -21,7 +21,7 @@
 
     <groupId>com.ubirch.id</groupId>
     <artifactId>ubirch-id-service-client_${scala.major.version}</artifactId>
-    <version>0.6.7</version>
+    <version>0.6.6</version>
     <packaging>jar</packaging>
 
     <licenses>
@@ -39,17 +39,6 @@
     <scm>
         <url>https://github.com/ubirch/ubirch-id-service-client</url>
     </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>https://gitlab.com/api/v4/projects/37429227/packages/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>gitlab-maven</id>
-            <url>https://gitlab.com/api/v4/projects/37429227/packages/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <organization>
         <name>ubirch GmbH</name>
@@ -80,7 +69,7 @@
         <scala.compat.version>2.13</scala.compat.version>
         <scalatest.version>3.2.10</scalatest.version>
 
-        <ubirch-crypto.version>2.1.4</ubirch-crypto.version>
+        <ubirch-crypto.version>2.1.2</ubirch-crypto.version>
         <ubirch-deep-check.version>0.4.2</ubirch-deep-check.version>
         <ubirch-redis-utils.version>0.6.2</ubirch-redis-utils.version>
         <ubirch-response-utils.version>0.5.2</ubirch-response-utils.version>
@@ -233,11 +222,15 @@
             <id>ubirch.mvn</id>
             <url>https://ubirch.mycloudrepo.io/public/repositories/mvn-public</url>
         </repository>
-	<repository>
-	    <id>gitlab-maven</id>
-	    <url>https://gitlab.com/api/v4/projects/37429227/packages/maven</url>
-	</repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>ubirch.mvn.publish</id>
+            <name>Ubirch Public Cloud Repo Repository</name>
+            <url>https://ubirch.mycloudrepo.io/repositories/mvn-public</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
